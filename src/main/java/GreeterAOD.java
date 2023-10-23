@@ -28,15 +28,9 @@ public class GreeterAOD {
     }
 
     // Start DB
-    public static Connection startDB() {
-        try {
-            String url = "jdbc:postgresql://localhost/grpc-zmq-sse-be-1?user=postgres&password=123";
-            return DriverManager.getConnection(url);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return null;
+    public Connection startDB() throws SQLException {
+        String url = "jdbc:postgresql://localhost/grpc-zmq-sse-be-1?user=postgres&password=123";
+        return DriverManager.getConnection(url);
     }
 
     // CRUD to DB
