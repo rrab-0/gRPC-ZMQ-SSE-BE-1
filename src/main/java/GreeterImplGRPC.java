@@ -12,13 +12,13 @@ import java.sql.Timestamp;
  */
 public class GreeterImplGRPC extends GreeterGrpc.GreeterImplBase {
     private final PubZMQ zmqPublisher;
-    // private final Connection dbConn;
     private final GreeterAOD greeter;
+    // private final Connection dbConn;
 
     public GreeterImplGRPC(PubZMQ publisher, GreeterAOD greeter) {
         this.zmqPublisher = publisher;
-        // this.dbConn = dbConn;
         this.greeter = greeter;
+        // this.dbConn = dbConn;
     }
 
     @Override

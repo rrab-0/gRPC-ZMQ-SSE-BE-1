@@ -2,6 +2,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Map;
 
 /*
  * Starts DB instance, DB CRUD methods + Model for Greeter
@@ -29,8 +30,14 @@ public class GreeterAOD {
     }
 
     // Start DB
-    public Connection startDB() throws SQLException {
-        String url = "jdbc:postgresql://localhost/grpc-zmq-sse-be-1?user=postgres&password=123";
+    public Connection startDB(Map<String, String> envVariables) throws SQLException {
+        String localhost = envVariables.get("DB_HOST");
+        String port = envVariables.get("DB_PORT");
+        String dbName = envVariables.get("DB_NAME");
+        String dbUser = envVariables.get("DB_USER");
+        String dbPassword = envVariables.get("DB_PASSWORD");
+
+        String url = String.format("jdbc:postgresql://" + localhost + ":" + port + "/" + dbName + "?user=" + dbUser + "&password=" + dbPassword);
         Connection dbConn = DriverManager.getConnection(url);
         this.globalDbConn = dbConn;
         return dbConn;

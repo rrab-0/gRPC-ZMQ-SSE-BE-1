@@ -53,8 +53,7 @@ public class ServerSSE {
                     message = "data: " + message + "\n\n";
                     os.write(message.getBytes());
                     os.flush();
-                    System.out.println(message);
-                    System.out.println("sent to SSE clients: " + message);
+                    System.out.println("Sent to SSE clients: " + message);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 } catch (IOException e) {
