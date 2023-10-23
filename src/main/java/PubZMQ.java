@@ -2,6 +2,9 @@ import org.zeromq.SocketType;
 import org.zeromq.ZContext;
 import org.zeromq.ZMQ;
 
+/*
+ * ZMQ Publisher
+ */
 public class PubZMQ {
     public ZMQ.Socket globalPub;
     public String defaultTopic = "miki-topic";

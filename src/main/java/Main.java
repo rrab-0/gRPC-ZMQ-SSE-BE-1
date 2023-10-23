@@ -8,8 +8,13 @@ import java.sql.SQLException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+/*
+ * Entry point
+ */
 public class Main {
     public static void main(String[] args) {
+        // TODO:
+        //  - load env
         // load ENV
 
         // start DB instance
@@ -17,7 +22,9 @@ public class Main {
         Connection dbConn = null;
         try {
             dbConn = greeter.startDB();
-            System.out.println("db connection: " + dbConn.toString());
+            if (dbConn.isValid(5)) {
+                System.out.println("Connected to PostgreSQL successfully");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -36,7 +43,9 @@ public class Main {
         // start GRPC server
         ServerGRPC serverGRPC = new ServerGRPC();
         try {
-            serverGRPC.start(zmqPublisher, dbConn);
+            if (dbConn != null) {
+                serverGRPC.start(zmqPublisher, greeter);
+            }
         } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
         }

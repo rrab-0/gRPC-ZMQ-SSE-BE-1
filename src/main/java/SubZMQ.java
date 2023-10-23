@@ -4,6 +4,9 @@ import org.zeromq.ZMQ;
 
 import java.util.concurrent.BlockingQueue;
 
+/*
+ * ZeroMQ Subscriber
+ */
 public class SubZMQ implements Runnable {
     private final ZMQ.Socket globalSub;
     public String defaultTopic = "miki-topic";

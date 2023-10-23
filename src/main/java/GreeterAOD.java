@@ -11,10 +11,6 @@ public class GreeterAOD {
     String message;
     Connection globalDbConn;
 
-    // public GreeterAOD() {
-    //     this.
-    // }
-
     // Getters and setters
     public String getIdentifier() {
         return identifier;
@@ -49,14 +45,4 @@ public class GreeterAOD {
         st.executeUpdate();
         st.close();
     }
-
-    // // CRUD to DB
-    // public static void create(Connection dbConn, GreeterAOD greeter) throws SQLException {
-    //     PreparedStatement st = dbConn.prepareStatement("INSERT INTO dump (identifier, message) VALUES (?, ?)");
-    //     st.setString(1, greeter.getIdentifier());
-    //     st.setString(2, greeter.getMessage());
-    //
-    //     st.executeUpdate();
-    //     st.close();
-    // }
 }

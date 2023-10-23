@@ -5,16 +5,20 @@ import proto.Helloworld;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
+/*
+ * gRPC handlers
+ */
 public class GreeterImplGRPC extends GreeterGrpc.GreeterImplBase {
     private final PubZMQ zmqPublisher;
-    private final Connection dbConn;
-    // private final GreeterAOD greeter;
+    // private final Connection dbConn;
+    private final GreeterAOD greeter;
 
-    public GreeterImplGRPC(PubZMQ publisher, Connection dbConn) {
+    public GreeterImplGRPC(PubZMQ publisher, GreeterAOD greeter) {
         this.zmqPublisher = publisher;
-        this.dbConn = dbConn;
-        // this.greeter = greeter;
+        // this.dbConn = dbConn;
+        this.greeter = greeter;
     }
 
     @Override
@@ -25,28 +29,13 @@ public class GreeterImplGRPC extends GreeterGrpc.GreeterImplBase {
         zmqPublisher.sendMessage(request.getName());
         System.out.printf("PUB sent %s to sub\n", request.getName());
 
-        // try {
-        //     GreeterAOD newGreeter = new GreeterAOD();
-        //     // TODO: change ID to env
-        //     newGreeter.setIdentifier("1");
-        //     newGreeter.setMessage("monkey");
-        //
-        //     greeter.create(newGreeter);
-        // } catch (SQLException e) {
-        //     System.out.println(e.getMessage());
-        // }
-
         try {
-            GreeterAOD greeter = new GreeterAOD();
+            GreeterAOD newGreeter = new GreeterAOD();
             // TODO: change ID to env
-            greeter.setIdentifier("1");
-            greeter.setMessage("monkey");
-            PreparedStatement st = dbConn.prepareStatement("INSERT INTO dump (identifier, message) VALUES (?, ?)");
-            st.setString(1, greeter.getIdentifier());
-            st.setString(2, greeter.getMessage());
+            newGreeter.setIdentifier("1");
+            newGreeter.setMessage(request.getName());
 
-            st.executeUpdate();
-            st.close();
+            greeter.create(newGreeter);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }

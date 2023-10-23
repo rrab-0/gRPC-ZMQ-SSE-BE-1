@@ -9,25 +9,10 @@ import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.util.concurrent.*;
 
+/*
+ * SSE Server Handlers
+ */
 public class ServerSSE {
-    // public static void main(String[] args) throws Exception {
-    //     BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
-    //     ZContext context = new ZContext();
-    //     SubZMQ subscriber = new SubZMQ(context, messageQueue);
-    //     Thread subZmqThread = new Thread(subscriber);
-    //     subZmqThread.start();
-    //
-    //     HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-    //
-    //     // Routes
-    //     server.createContext("/", new HelloWorld());
-    //     server.createContext("/yo", new SSE(messageQueue));
-    //
-    //     server.setExecutor(null); // creates a default executor
-    //     server.start();
-    //     System.out.println("Server is up and running on :8080");
-    // }
-
     static class HelloWorld implements HttpHandler {
         @Override
         public void handle(HttpExchange t) throws IOException {
