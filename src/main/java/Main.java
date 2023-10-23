@@ -11,10 +11,13 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Main {
     public static void main(String[] args) {
         // load ENV
+
         // start DB instance
         GreeterAOD greeter = new GreeterAOD();
+        Connection dbConn = null;
         try {
-            Connection dbConn = greeter.startDB();
+            dbConn = greeter.startDB();
+            System.out.println("db connection: " + dbConn.toString());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -33,7 +36,7 @@ public class Main {
         // start GRPC server
         ServerGRPC serverGRPC = new ServerGRPC();
         try {
-            serverGRPC.start(zmqPublisher);
+            serverGRPC.start(zmqPublisher, dbConn);
         } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
         }
@@ -43,8 +46,8 @@ public class Main {
             HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
 
             // Routes
-            server.createContext("/", new HelloWorld());
-            server.createContext("/yo", new SSE());
+            server.createContext("/", new ServerSSE.HelloWorld());
+            server.createContext("/yo", new ServerSSE.SSE(messageQueue));
 
             server.setExecutor(null); // creates a default executor
             server.start();

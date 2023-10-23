@@ -6,26 +6,27 @@ import org.zeromq.ZContext;
 
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.sql.Connection;
 import java.util.concurrent.*;
 
 public class ServerSSE {
-    public static void main(String[] args) throws Exception {
-        BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
-        ZContext context = new ZContext();
-        SubZMQ subscriber = new SubZMQ(context, messageQueue);
-        Thread subZmqThread = new Thread(subscriber);
-        subZmqThread.start();
-
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
-
-        // Routes
-        server.createContext("/", new HelloWorld());
-        server.createContext("/yo", new SseStreamHandler(messageQueue));
-
-        server.setExecutor(null); // creates a default executor
-        server.start();
-        System.out.println("Server is up and running on :8080");
-    }
+    // public static void main(String[] args) throws Exception {
+    //     BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
+    //     ZContext context = new ZContext();
+    //     SubZMQ subscriber = new SubZMQ(context, messageQueue);
+    //     Thread subZmqThread = new Thread(subscriber);
+    //     subZmqThread.start();
+    //
+    //     HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+    //
+    //     // Routes
+    //     server.createContext("/", new HelloWorld());
+    //     server.createContext("/yo", new SSE(messageQueue));
+    //
+    //     server.setExecutor(null); // creates a default executor
+    //     server.start();
+    //     System.out.println("Server is up and running on :8080");
+    // }
 
     static class HelloWorld implements HttpHandler {
         @Override
@@ -44,10 +45,10 @@ public class ServerSSE {
         }
     }
 
-    static class SseStreamHandler implements HttpHandler {
+    static class SSE implements HttpHandler {
         private final BlockingQueue<String> messageQueue;
 
-        public SseStreamHandler(BlockingQueue<String> messageQueue) {
+        public SSE(BlockingQueue<String> messageQueue) {
             this.messageQueue = messageQueue;
         }
 

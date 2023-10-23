@@ -18,6 +18,13 @@
     </properties>
 
     <dependencies>
+        <!-- psql driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.6.0</version>
+        </dependency>
+
         <!-- native java http-server https://mvnrepository.com/artifact/com.sun.net.httpserver/http -->
         <dependency>
             <groupId>com.sun.net.httpserver</groupId>
@@ -102,7 +109,6 @@
                     </execution>
                 </executions>
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
