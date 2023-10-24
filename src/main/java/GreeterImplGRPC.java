@@ -13,12 +13,10 @@ import java.sql.Timestamp;
 public class GreeterImplGRPC extends GreeterGrpc.GreeterImplBase {
     private final PubZMQ zmqPublisher;
     private final GreeterAOD greeter;
-    // private final Connection dbConn;
 
     public GreeterImplGRPC(PubZMQ publisher, GreeterAOD greeter) {
         this.zmqPublisher = publisher;
         this.greeter = greeter;
-        // this.dbConn = dbConn;
     }
 
     @Override
@@ -32,7 +30,7 @@ public class GreeterImplGRPC extends GreeterGrpc.GreeterImplBase {
         try {
             GreeterAOD newGreeter = new GreeterAOD();
             // TODO: change ID to env
-            newGreeter.setIdentifier("1");
+            // newGreeter.setIdentifier("1");
             newGreeter.setMessage(request.getName());
 
             greeter.create(newGreeter);

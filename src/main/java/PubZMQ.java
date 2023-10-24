@@ -16,11 +16,12 @@ public class PubZMQ {
     }
 
     public void start(ZContext context, Map<String, String> envVariables) {
+        String pubZmqHost = envVariables.get("ZMQ_PUB_HOST");
         String pubZmqPort = envVariables.get("ZMQ_PUB_PORT");
         ZMQ.Socket publisher = context.createSocket(SocketType.PUB);
-        publisher.bind("tcp://localhost:" + pubZmqPort);
+        publisher.bind("tcp://" + pubZmqHost + ":" + pubZmqPort);
         this.globalPub = publisher;
-        System.out.println("BE-1 ZMQ-PUB is up and running at :" + pubZmqPort);
+        System.out.println("BE-1 ZMQ-PUB is up and running at " + pubZmqHost + ":" + pubZmqPort);
     }
 
     public void sendMessage(String msg) {

@@ -1,4 +1,3 @@
-import com.google.api.Http;
 import com.sun.net.httpserver.HttpServer;
 import org.zeromq.ZContext;
 
@@ -37,14 +36,15 @@ public class Main {
         // start SubZMQ server
         BlockingQueue<String> messageQueue = new LinkedBlockingQueue<>();
         ZContext zmqSubContext = new ZContext();
-        SubZMQ zmqSub = new SubZMQ(zmqSubContext, messageQueue, envVariables);
+        SubZMQ zmqSub = new SubZMQ(zmqSubContext, messageQueue, envVariables, greeter);
         Thread zmqSubThread = new Thread(zmqSub);
         zmqSubThread.start();
 
         // start SSE server
         try {
+            String httpServerHost = envVariables.get("SSE_SERVER_HOST");
             int httpServerPort = Integer.parseInt(envVariables.get("SSE_SERVER_PORT"));
-            HttpServer server = HttpServer.create(new InetSocketAddress(httpServerPort), 0);
+            HttpServer server = HttpServer.create(new InetSocketAddress(httpServerHost, httpServerPort), 0);
 
             // Routes
             server.createContext("/", new ServerSSE.HelloWorld());
@@ -52,7 +52,7 @@ public class Main {
 
             server.setExecutor(null); // creates a default executor
             server.start();
-            System.out.println("SSE Server is up and running on :8080");
+            System.out.println("SSE Server is up and running on " + httpServerHost + ":" + httpServerPort);
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
