@@ -45,9 +45,10 @@ public class GreeterAOD {
 
     // CRUD to DB
     public void create(GreeterAOD greeter) throws SQLException {
-        PreparedStatement st = this.globalDbConn.prepareStatement("INSERT INTO dump (identifier, message) VALUES (?, ?)");
-        st.setString(1, greeter.getIdentifier());
-        st.setString(2, greeter.getMessage());
+        // PreparedStatement st = this.globalDbConn.prepareStatement("INSERT INTO dump (identifier, message) VALUES (?, ?)");
+        // st.setString(1, greeter.getIdentifier());
+        PreparedStatement st = this.globalDbConn.prepareStatement("INSERT INTO dump (message) VALUES (?)");
+        st.setString(1, greeter.getMessage());
 
         st.executeUpdate();
         st.close();

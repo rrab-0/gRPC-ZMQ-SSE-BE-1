@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Base64;
 
 /*
  * gRPC handlers
@@ -22,16 +23,17 @@ public class GreeterImplGRPC extends GreeterGrpc.GreeterImplBase {
     @Override
     public void sayHello(Helloworld.HelloRequest request, StreamObserver<Helloworld.HelloReply> responseObserver) {
         Helloworld.HelloReply reply = Helloworld.HelloReply.newBuilder().setMessage("you request was sent to BE-2 ZMQ-SUB hopefully.").build();
-        System.out.println("gRPC, client says: " + request.getName());
+        String messageBase64 = Base64.getEncoder().encodeToString(request.getName().getBytes());
+        System.out.println("gRPC, client says: " + messageBase64);
 
-        zmqPublisher.sendMessage(request.getName());
-        System.out.printf("PUB sent %s to sub\n", request.getName());
+        zmqPublisher.sendMessage(messageBase64);
+        System.out.printf("PUB sent %s to sub\n", messageBase64);
 
         try {
             GreeterAOD newGreeter = new GreeterAOD();
             // TODO: change ID to env
             // newGreeter.setIdentifier("1");
-            newGreeter.setMessage(request.getName());
+            newGreeter.setMessage(messageBase64);
 
             greeter.create(newGreeter);
         } catch (SQLException e) {
